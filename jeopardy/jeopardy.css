@@ -8,9 +8,9 @@ body {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: row;
-          flex-direction: row;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -18,7 +18,7 @@ body {
       justify-content: space-around;
   min-height: 100vh;
   min-width: 100vw;
-  overflow-x: hidden;
+  overflow-x: wrap;
 }
 
 table {
@@ -32,6 +32,8 @@ table {
   background-color: #0e1977;
   overflow: auto;
   color: white;
+  -webkit-box-shadow: 2px 2px 10px #1d0808;
+          box-shadow: 2px 2px 10px #1d0808;
 }
 
 table thead {
@@ -84,8 +86,9 @@ div.question-container {
 }
 
 div.question-container p {
-  width: 80%;
-  height: 80%;
+  max-width: 80%;
+  max-height: 80%;
+  display: inline;
   text-align: center;
 }
 
@@ -127,8 +130,8 @@ div.question-container::-webkit-scrollbar-thumb {
       -ms-flex-pack: center;
           justify-content: center;
   border-radius: 6px;
-  -webkit-box-shadow: 3px 3px 3px #1d0808;
-          box-shadow: 3px 3px 3px #1d0808;
+  -webkit-box-shadow: 2px 2px 10px #1d0808;
+          box-shadow: 2px 2px 10px #1d0808;
 }
 
 .menu h1 {
@@ -156,6 +159,7 @@ div.question-container::-webkit-scrollbar-thumb {
   color: black;
   font-size: 1.25rem;
   line-height: 25px;
+  text-justify: center;
 }
 
 .menu button {
@@ -193,6 +197,7 @@ footer {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  margin-top: 30px;
 }
 
 footer div {
@@ -202,5 +207,14 @@ footer div {
 footer div p {
   color: white;
   text-align: center;
+}
+
+footer a {
+  color: #2418d3;
+}
+
+.answer {
+  color: #c5c215;
+  font-weight: bold;
 }
 /*# sourceMappingURL=jeopardy.css.map */

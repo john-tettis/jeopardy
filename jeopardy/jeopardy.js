@@ -29,7 +29,7 @@ NUM_QUESTIONS_PER_CAT=5;
 
 async function getCategoryIds() {
     const url = `http://jservice.io//api/random?count=${NUM_CATEGORIES*3}`
-    let results = await axios.get(url).catch((err)=>console.log(err));
+    let results = await axios.get(url,{timeout:4000}).catch((err)=>console.log(err));
     let totalIds=results.data.map((clue)=>clue.category_id)
     let ids=[]
     while(true){
@@ -56,26 +56,43 @@ async function getCategoryIds() {
 
 async function getCategory(catId) {
     const url =`http://jservice.io//api/category?id=${catId}`
-    let result = await axios.get(url).catch((err)=>console.log(err));
+    let result = await axios.get(url,{timeout:4000}).catch((err)=>console.log(err));
     let totalClues =[...result.data.clues]
     let {title, id} = result.data;
     let clues=[];
     let i =0;
-    while(true){
-        if(clues.length===NUM_QUESTIONS_PER_CAT)break;
-        let clue = totalClues[Math.floor(Math.random()*(totalClues.length+1))];
-        if(clue && clues.length===0 || clue && !clues.some((clue1)=> clue1.answer === clue.answer)){
-            if(clue.question){
-                clues.push({
-                    clue:clue.question,
-                    id:clue.id,
-                    answer:clue.answer,
-                    showing:null
+    if(totalClues.length===NUM_QUESTIONS_PER_CAT){
+        for(let clue of totalClues){
+            clues.push({
+                clue:clue.question,
+                id:clue.id,
+                answer:clue.answer,
+                showing:null
             });
-            i++;
+        }
+    }
+    else{
+        while(true){
+        
+            if(clues.length===NUM_QUESTIONS_PER_CAT)break;
+            let clue = totalClues[Math.floor(Math.random()*(totalClues.length+1))];
+            if(clue && clues.length===0 || clue && !clues.some((clue1)=> clue1.answer === clue.answer)){
+                if(clue.question){
+                    clues.push({
+                        clue:clue.question,
+                        id:clue.id,
+                        answer:clue.answer,
+                        showing:null
+                });
+                i++;
+                
+                }
             }
         }
     }
+    console.log(clues)
+    
+    
     return{id, title,clues};
 }
 
@@ -137,19 +154,12 @@ function handleClick(evt, categories) {
     let card = (target.nodeName==='DIV') ? $(target): (target.nodeName==='I'|| target.nodeName==='P') ? $(target.parentElement):null;
     if(!card) return;
     let id =card.attr('data-question-id');
-    // let clue =categories.reduce((acc, category)=>{
-    //     let response =category.clues.filter((clue)=>{
-    //         console.log(id ===clue.id.toString())
-    //         clue.id.toString()===id});
-    //     return (response[0]) ? response[0]:acc
-    // })
     let clues = categories.map((cat)=>cat.clues).flat();
     let clue = clues.reduce((acc, clue)=>{
         return (clue.id.toString() ===id) ? clue:acc;
     })
-    console.log(clue)
     if(clue.showing==='question'){
-        card.html(`<p>${clue.answer}</p>`)
+        card.html(`<p class="answer">${clue.answer}</p>`)
         clue.showing='answer';
     }
     if(clue.showing==='answer'){
@@ -170,6 +180,8 @@ function handleClick(evt, categories) {
 
 function showLoadingView() {
     let $board =$('#jeopardy').empty()
+    let $menu = $('.menu');
+    $menu.css('display','none');
     $board.append('<div class="center"><i class="fas fa-circle-notch fa-spin fa-5x"></i></div>')
 
 
@@ -179,6 +191,8 @@ function showLoadingView() {
 
 function hideLoadingView() {
     let $board =$('#jeopardy').empty()
+    let $menu = $('.menu');
+    $menu.css('display','flex');
 
 }
 
