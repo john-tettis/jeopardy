@@ -28,7 +28,7 @@ NUM_QUESTIONS_PER_CAT=5;
  */
 
 async function getCategoryIds() {
-    const url = `http://jservice.io//api/random?count=${NUM_CATEGORIES*3}`
+    const url = `https://jservice.io//api/random?count=${NUM_CATEGORIES*3}`
     let results = await axios.get(url,{timeout:4000}).catch((err)=>console.log(err));
     let totalIds=results.data.map((clue)=>clue.category_id)
     let ids=[]
@@ -55,7 +55,7 @@ async function getCategoryIds() {
  */
 
 async function getCategory(catId) {
-    const url =`http://jservice.io//api/category?id=${catId}`
+    const url =`https://jservice.io//api/category?id=${catId}`
     let result = await axios.get(url,{timeout:4000}).catch((err)=>console.log(err));
     let totalClues =[...result.data.clues]
     let {title, id} = result.data;
