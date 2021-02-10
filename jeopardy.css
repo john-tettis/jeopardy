@@ -18,7 +18,7 @@ body {
       justify-content: space-around;
   min-height: 100vh;
   min-width: 100vw;
-  overflow-x: wrap;
+  overflow-x: auto;
 }
 
 table {
